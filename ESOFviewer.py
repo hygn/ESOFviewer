@@ -14,6 +14,8 @@ def curl(url, postfields, cookie, posten):
     curl.setopt(curl.COOKIE, cookie)
     curl.setopt(pycurl.USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0")
     curl.setopt(pycurl.WRITEDATA, buffer)
+    curl.setopt(pycurl.SSL_VERIFYPEER, 0)   
+    curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     curl.perform()
     curl.close()
     dat = buffer.getvalue().decode('UTF-8')
