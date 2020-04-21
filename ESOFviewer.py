@@ -37,6 +37,7 @@ if end == 0:
 while True:
     if end == 1:
         url = input("url: ")
+        hoc = url.split("//")[1].split(".")[0]
         safedrive = input("safemode(y/n): ")
         if safedrive == "y" or safedrive == "n":
             pass
