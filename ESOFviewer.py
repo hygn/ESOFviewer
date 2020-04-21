@@ -73,8 +73,8 @@ while True:
     curl("https://hoc26.ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
     print("start packet sent")
     #getvideo
-    #wget.download(video.replace("\\", ""), 'out.mp4')
-    #print("video downloaded")
+    wget.download(video.replace("\\", ""), 'out.mp4')
+    print("video downloaded")
     #studycheck
     i = 0
     postfields = urlencode(post_data)
