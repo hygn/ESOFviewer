@@ -77,8 +77,16 @@ while True:
     curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
     print("start packet sent")
     #getvideo
-    #wget.download(video.replace("\\", ""), 'out.mp4')
-    print("video downloaded")
+    getvid = input("download video? (y/n):")
+    if getvid == "y" or getvid == "n":
+        pass
+    else:
+        getvid = input("safemode(y/n): ")
+    if getvid == "y":
+        wget.download(video.replace("\\", ""), 'out.mp4')
+        print("video downloaded")
+    else:
+        print("skip video download")
     #studycheck
     i = 0
     postfields = urlencode(post_data)
