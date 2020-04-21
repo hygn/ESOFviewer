@@ -82,7 +82,7 @@ while True:
     postfields = urlencode(post_data)
     rep = int(str(int(revtime)/120).split(".")[0])
     rem = int(revtime) % 120
-    if safedrive == "y":
+    if True:
         while True:
             if i == 0:
                 lrnmux = 0
@@ -103,9 +103,15 @@ while True:
             print("check packet sent")
             i = i + 1
             if i != rep:
-                time.sleep(120)
+                if safedrive == "y":
+                    time.sleep(120)
+                if safedrive == "n":
+                    time.sleep(0.1)
             if i == rep:
-                time.sleep(rem)
+                if safedrive == "y":
+                    time.sleep(rem)
+                else:
+                     pass
                 post_data = {
                 'stepSn': params[1].split("=")[1] ,
                 'sessSn': '' , 
@@ -122,39 +128,4 @@ while True:
                 curl("https://hoc26.ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
                 print("end packet sent")
                 break
-    else:
-        goto = input("goto(seconds)(empty is goto end): ")
-        if goto == "":
-            goto = revtime
-        else:
-            pass
-        post_data = {
-        'stepSn': params[1].split("=")[1] ,
-        'sessSn': '' , 
-        'atnlcNo': params[0].split("=")[1] , 
-        'lctreSn': params[2].split("=")[1],
-        'cntntsTyCode' : cnts,
-        'lctreSeCode' : 'LCTRE',
-        'revivTime' : revtime ,
-        'lastRevivLc' : str(120) ,
-        'lrnTime' : str(120)}
-        postfields = urlencode(post_data)
-        curl("https://hoc26.ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
-        print("check packet sent")
-        time.sleep(10)
-        post_data = {
-        'stepSn': params[1].split("=")[1] ,
-        'sessSn': '' , 
-        'atnlcNo': params[0].split("=")[1] , 
-        'lctreSn': params[2].split("=")[1],
-        'cntntsTyCode' : cnts,
-        'lctreSeCode' : 'LCTRE',
-        'revivTime' : revtime ,
-        'lastRevivLc' : goto,
-        'lrnTime' : str(int(goto)%120),
-        'endButtonYn' :  'Y'
-         }
-        postfields = urlencode(post_data)
-        curl("https://hoc26.ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
-        print("end packet sent")
     end = 1
