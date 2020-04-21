@@ -1,5 +1,9 @@
 # EBS ESOF뷰어
 ## 사용방법
-$ pip install pycurl --user  
-$ pip install wget --user  
-$ python ESOFviewer.py  
+$ pip3 install pycurl --user  
+$ pip3 install wget --user  
+$ python3 ESOFviewer.py 
+## 결과
+강의 파일이 out.mp4로 다운로드됩니다   
+강의 시청 완료로 업데이트 됩니다   
+safemode를 켜면 2분마다 저장 신호를 EBS에 보내며 강의 시간동안 계속 실행됩니
