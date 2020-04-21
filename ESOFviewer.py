@@ -25,6 +25,7 @@ if end == 0:
     url = input("url: ")
     JSEEEIONID = input("JSESSIONID: ")
     KHANUSER = input("KHANUSER: ")
+    hoc = url.split("//")[1].split(".")[0]
     safedrive = input("safemode(y/n): ")
     if safedrive == "y" or safedrive == "n":
         pass
@@ -46,7 +47,7 @@ while True:
     print("main page loaded")
     cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
     #next load
-    get = url.strip("https://hoc26.ebssw.kr/mypage/userlrn/userLrnView.do?")
+    get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
     params = get.split("&")
     post_data = {
      'stepSn': params[1].split("=")[1] ,
@@ -55,7 +56,7 @@ while True:
      'lctreSn': params[2].split("=")[1],
      'cntntsTyCode' : cnts}
     postfields = urlencode(post_data)
-    dat = curl("https://hoc26.ebssw.kr/mypage/userlrn/userLrnMvpView.do", postfields, cookie, True)
+    dat = curl("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnMvpView.do", postfields, cookie, True)
     print("sub page loaded")
     #extract video info
     video = dat.split('src":"')[1].split('"')[0]
@@ -64,18 +65,18 @@ while True:
     get_data = {
      '_': str(time.time()).split(".")[0]}
     getfields = urlencode(get_data)
-    curl("https://hoc26.ebssw.kr/js/require.js?"+getfields, "", cookie, False)
-    curl("https://hoc26.ebssw.kr/js/egovframework/com/ebs/cmmn/common.js?"+getfields, "", cookie, False)
+    curl("https://"+hoc+".ebssw.kr/js/require.js?"+getfields, "", cookie, False)
+    curl("https://"+hoc+".ebssw.kr/js/egovframework/com/ebs/cmmn/common.js?"+getfields, "", cookie, False)
     print("js loaded")
     #startsig
     post_data = {
      'lctreSn': params[2].split("=")[1],
      'cntntsUseTyCode' : cnts}
     postfields = urlencode(post_data)
-    curl("https://hoc26.ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
+    curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
     print("start packet sent")
     #getvideo
-    wget.download(video.replace("\\", ""), 'out.mp4')
+    #wget.download(video.replace("\\", ""), 'out.mp4')
     print("video downloaded")
     #studycheck
     i = 0
@@ -99,7 +100,7 @@ while True:
             'lastRevivLc' : str(120 * i) ,
             'lrnTime' : str(120*lrnmux)}
             postfields = urlencode(post_data)
-            curl("https://hoc26.ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
+            curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
             print("check packet sent")
             i = i + 1
             if i != rep:
@@ -125,7 +126,7 @@ while True:
                 'endButtonYn' :  'Y'
                  }
                 postfields = urlencode(post_data)
-                curl("https://hoc26.ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
+                curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
                 print("end packet sent")
                 break
     end = 1
