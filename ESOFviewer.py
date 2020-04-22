@@ -3,6 +3,7 @@ import time
 import wget
 from urllib.parse import urlencode
 from io import BytesIO
+import random
 buffer = BytesIO()
 def curl(url, postfields, cookie, posten):
     curl = pycurl.Curl()
@@ -21,107 +22,94 @@ def curl(url, postfields, cookie, posten):
     dat = buffer.getvalue().decode('UTF-8')
     return dat
 end = 0
-if end == 0:
-    url = input("url: ")
-    JSEEEIONID = input("JSESSIONID: ")
-    KHANUSER = input("KHANUSER: ")
-    hoc = url.split("//")[1].split(".")[0]
-    safedrive = input("safemode(y/n): ")
-    if safedrive == "y" or safedrive == "n":
-        pass
-    else:
-        safedrive = input("safemode(y/n): ")
+while True:
+    if end == 0:
+        try:
+            url = input("url: ")
+            JSEEEIONID = input("JSESSIONID: ")
+            KHANUSER = input("KHANUSER: ")
+            hoc = url.split("//")[1].split(".")[0]
+            safedrive = input("safemode(y/n): ")
+            if safedrive == "y" or safedrive == "n":
+                pass
+            else:
+                 safedrive = input("safemode(y/n): ")
+            break
+        except IndexError:
+            print("please input valid value!")
 #url =  ""
 #JSEEEIONID = ""
 #KHANUSER = ""
 while True:
     if end == 1:
-        url = input("url: ")
-        hoc = url.split("//")[1].split(".")[0]
-        safedrive = input("safemode(y/n): ")
-        if safedrive == "y" or safedrive == "n":
+        while True:
+            try:
+                url = input("url: ")
+                hoc = url.split("//")[1].split(".")[0]
+                safedrive = input("safemode(y/n): ")
+                if safedrive == "y" or safedrive == "n":
+                    pass
+                else:
+                    safedrive = input("safemode(y/n): ")
+                break
+            except IndexError: 
+                print("please input valid value!")
+    try:
+        cookie = "KHANUSER=" + KHANUSER + "; JSESSIONID=" + JSEEEIONID 
+        dat = curl(url, "", cookie, False)
+        print("main page loaded")
+        cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
+        #next load
+        get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
+        params = get.split("&")
+        post_data = {
+         'stepSn': params[1].split("=")[1] ,
+         'sessSn': '' , 
+         'atnlcNo': params[0].split("=")[1] , 
+         'lctreSn': params[2].split("=")[1],
+         'cntntsTyCode' : cnts}
+        postfields = urlencode(post_data)
+        dat = curl("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnMvpView.do", postfields, cookie, True)
+        print("sub page loaded")
+        #extract video info
+        video = dat.split('src":"')[1].split('"')[0]
+        revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
+        #getjs
+        get_data = {
+         '_': str(time.time()).split(".")[0]}
+        getfields = urlencode(get_data)
+        curl("https://"+hoc+".ebssw.kr/js/require.js?"+getfields, "", cookie, False)
+        curl("https://"+hoc+".ebssw.kr/js/egovframework/com/ebs/cmmn/common.js?"+getfields, "", cookie, False)
+        print("js loaded")
+        #startsig
+        post_data = {
+         'lctreSn': params[2].split("=")[1],
+         'cntntsUseTyCode' : cnts}
+        postfields = urlencode(post_data)
+        curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
+        print("start packet sent")
+        #getvideo
+        getvid = input("download video? (y/n):")
+        if getvid == "y" or getvid == "n":
             pass
         else:
-            safedrive = input("safemode(y/n): ")
-    cookie = "KHANUSER=" + KHANUSER + "; JSESSIONID=" + JSEEEIONID 
-    dat = curl(url, "", cookie, False)
-    print("main page loaded")
-    cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
-    #next load
-    get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
-    params = get.split("&")
-    post_data = {
-     'stepSn': params[1].split("=")[1] ,
-     'sessSn': '' , 
-     'atnlcNo': params[0].split("=")[1] , 
-     'lctreSn': params[2].split("=")[1],
-     'cntntsTyCode' : cnts}
-    postfields = urlencode(post_data)
-    dat = curl("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnMvpView.do", postfields, cookie, True)
-    print("sub page loaded")
-    #extract video info
-    video = dat.split('src":"')[1].split('"')[0]
-    revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
-    #getjs
-    get_data = {
-     '_': str(time.time()).split(".")[0]}
-    getfields = urlencode(get_data)
-    curl("https://"+hoc+".ebssw.kr/js/require.js?"+getfields, "", cookie, False)
-    curl("https://"+hoc+".ebssw.kr/js/egovframework/com/ebs/cmmn/common.js?"+getfields, "", cookie, False)
-    print("js loaded")
-    #startsig
-    post_data = {
-     'lctreSn': params[2].split("=")[1],
-     'cntntsUseTyCode' : cnts}
-    postfields = urlencode(post_data)
-    curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
-    print("start packet sent")
-    #getvideo
-    getvid = input("download video? (y/n):")
-    if getvid == "y" or getvid == "n":
-        pass
-    else:
-        getvid = input("safemode(y/n): ")
-    if getvid == "y":
-        wget.download(video.replace("\\", ""), 'out.mp4')
-        print("video downloaded")
-    else:
-        print("skip video download")
-    #studycheck
-    i = 0
-    postfields = urlencode(post_data)
-    rep = int(str(int(revtime)/120).split(".")[0])
-    rem = int(revtime) % 120
-    if True:
-        while True:
-            if i == 0:
-                lrnmux = 0
-            else:
-                lrnmux = 1
-            post_data = {
-            'stepSn': params[1].split("=")[1] ,
-            'sessSn': '' , 
-            'atnlcNo': params[0].split("=")[1] , 
-            'lctreSn': params[2].split("=")[1],
-            'cntntsTyCode' : cnts,
-            'lctreSeCode' : 'LCTRE',
-            'revivTime' : revtime ,
-            'lastRevivLc' : str(120 * i) ,
-            'lrnTime' : str(120*lrnmux)}
-            postfields = urlencode(post_data)
-            curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
-            print("check packet sent")
-            i = i + 1
-            if i != rep:
-                if safedrive == "y":
-                    time.sleep(120)
-                if safedrive == "n":
-                    time.sleep(0.1)
-            if i == rep:
-                if safedrive == "y":
-                    time.sleep(rem)
+            getvid = input("download video?(y/n): ")
+        if getvid == "y":
+            wget.download(video.replace("\\", ""), 'out.mp4')
+            print("video downloaded")
+        else:
+            print("skip video download")
+        #studycheck
+        i = 0
+        postfields = urlencode(post_data)
+        rep = int(str(int(revtime)/120).split(".")[0])
+        rem = int(revtime) % 120
+        if True:
+            while True:
+                if i == 0:
+                    lrnmux = 0
                 else:
-                     pass
+                    lrnmux = 1
                 post_data = {
                 'stepSn': params[1].split("=")[1] ,
                 'sessSn': '' , 
@@ -130,12 +118,42 @@ while True:
                 'cntntsTyCode' : cnts,
                 'lctreSeCode' : 'LCTRE',
                 'revivTime' : revtime ,
-                'lastRevivLc' : revtime ,
-                'lrnTime' : str(rem),
-                'endButtonYn' :  'Y'
-                 }
+                'lastRevivLc' : str(120 * i + random.randrange(0,2) - 1) ,
+                'lrnTime' : str(120*lrnmux)}
                 postfields = urlencode(post_data)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
-                print("end packet sent")
-                break
-    end = 1
+                print("check packet sent")
+                i = i + 1
+                if i != rep:
+                    if safedrive == "y":
+                        time.sleep(120+random.randrange(0,4)-2)
+                    if safedrive == "n":
+                        time.sleep(random.randrange(1,3)*0.1)
+                if i == rep:
+                    if safedrive == "y":
+                        time.sleep(rem)
+                    else:
+                         pass
+                    post_data = {
+                    'stepSn': params[1].split("=")[1] ,
+                    'sessSn': '' , 
+                    'atnlcNo': params[0].split("=")[1] , 
+                    'lctreSn': params[2].split("=")[1],
+                    'cntntsTyCode' : cnts,
+                    'lctreSeCode' : 'LCTRE',
+                    'revivTime' : revtime ,
+                    'lastRevivLc' : str(int(revtime)+random.randrange(0,1)) ,
+                    'lrnTime' : str(rem),
+                    'endButtonYn' :  'Y'
+                     }
+                    postfields = urlencode(post_data)
+                    curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
+                    print("end packet sent")
+                    break
+        end = 1
+    except Exception as error: 
+        print("ERROR!!")
+        print("please report this problem")
+        print(error)
+        input("")
+        break
