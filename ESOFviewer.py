@@ -106,7 +106,6 @@ try:
     curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
     print("start packet sent")
     #getvideo
-    sendnoti("download video? \n please open command prompt")
     getvid = input("download video? (y/n):")
     if getvid == "y" or getvid == "n":
         pass
@@ -170,9 +169,10 @@ try:
                 print("end packet sent")
                 break
     end = 1
-    sendnoti("complete! \n BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
+    print("complete! \n BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
 except Exception as error: 
     print("ERROR!!")
     print("please report this problem")
     print(error)
     input("")
+    raise
