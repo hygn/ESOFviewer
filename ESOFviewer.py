@@ -130,7 +130,7 @@ try:
                 lrnmux = 1
             post_data = {
             'stepSn': params[1].split("=")[1] ,
-            'sessSn': '' , 
+            'lrnAt': '' , 
             'atnlcNo': params[0].split("=")[1] , 
             'lctreSn': params[2].split("=")[1],
             'cntntsTyCode' : cnts,
@@ -154,7 +154,7 @@ try:
                     time.sleep(10)
                 post_data = {
                 'stepSn': params[1].split("=")[1] ,
-                'sessSn': '' , 
+                'lrnAt': '' , 
                 'atnlcNo': params[0].split("=")[1] , 
                 'lctreSn': params[2].split("=")[1],
                 'cntntsTyCode' : cnts,
