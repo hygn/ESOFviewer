@@ -122,7 +122,8 @@ try:
     postfields = urlencode(post_data)
     rep = int(str(int(revtime)/120).split(".")[0])
     rem = int(revtime) % 120
-    if True:
+    encheck = True
+    if encheck == True:
         while True:
             if i == 0:
                 lrnmux = 0
@@ -167,9 +168,9 @@ try:
                 postfields = urlencode(post_data)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
                 print("end packet sent")
-                sendnoti("complete! \n put another URL!")
                 break
     end = 1
+    sendnoti("complete! \n BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
 except Exception as error: 
     print("ERROR!!")
     print("please report this problem")
