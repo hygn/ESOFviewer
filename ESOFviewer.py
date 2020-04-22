@@ -4,6 +4,7 @@ import wget
 from urllib.parse import urlencode
 from io import BytesIO
 import random
+import subprocess
 buffer = BytesIO()
 def curl(url, postfields, cookie, posten):
     curl = pycurl.Curl()
@@ -21,6 +22,9 @@ def curl(url, postfields, cookie, posten):
     curl.close()
     dat = buffer.getvalue().decode('UTF-8')
     return dat
+def sendnoti(msg):
+    subprocess.Popen(['notify-send', msg])
+    return
 end = 0
 while True:
     if end == 0:
@@ -55,13 +59,13 @@ while True:
             except IndexError: 
                 print("please input valid value!")
     try:
+        get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
+        params = get.split("&")
         cookie = "KHANUSER=" + KHANUSER + "; JSESSIONID=" + JSEEEIONID 
         dat = curl(url, "", cookie, False)
         print("main page loaded")
         cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
         #next load
-        get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
-        params = get.split("&")
         post_data = {
          'stepSn': params[1].split("=")[1] ,
          'sessSn': '' , 
@@ -70,10 +74,13 @@ while True:
          'cntntsTyCode' : cnts}
         postfields = urlencode(post_data)
         dat = curl("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnMvpView.do", postfields, cookie, True)
+        print(curl("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnMvpView.do", postfields, cookie, True))
         print("sub page loaded")
-        #extract video info
+        #extract video info    
         video = dat.split('src":"')[1].split('"')[0]
         revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
+        print(revtime)
+        print(video)
         #getjs
         get_data = {
          '_': str(time.time()).split(".")[0]}
@@ -89,6 +96,7 @@ while True:
         curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do", postfields, cookie, True)
         print("start packet sent")
         #getvideo
+        sendnoti("download video? \n please open command prompt")
         getvid = input("download video? (y/n):")
         if getvid == "y" or getvid == "n":
             pass
@@ -104,6 +112,9 @@ while True:
         postfields = urlencode(post_data)
         rep = int(str(int(revtime)/120).split(".")[0])
         rem = int(revtime) % 120
+        print(revtime)
+        print(rep)
+        print(rem)
         if True:
             while True:
                 if i == 0:
@@ -118,7 +129,7 @@ while True:
                 'cntntsTyCode' : cnts,
                 'lctreSeCode' : 'LCTRE',
                 'revivTime' : revtime ,
-                'lastRevivLc' : str(120 * i + random.randrange(0,2) - 1) ,
+                'lastRevivLc' : str(120 * i) ,
                 'lrnTime' : str(120*lrnmux)}
                 postfields = urlencode(post_data)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
@@ -128,12 +139,12 @@ while True:
                     if safedrive == "y":
                         time.sleep(120+random.randrange(0,4)-2)
                     if safedrive == "n":
-                        time.sleep(random.randrange(1,3)*0.1)
+                        time.sleep(10)
                 if i == rep:
                     if safedrive == "y":
                         time.sleep(rem)
                     else:
-                         pass
+                        time.sleep(10)
                     post_data = {
                     'stepSn': params[1].split("=")[1] ,
                     'sessSn': '' , 
@@ -149,6 +160,7 @@ while True:
                     postfields = urlencode(post_data)
                     curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do", postfields, cookie, True)
                     print("end packet sent")
+                    sendnoti("complete! \n put another URL!")
                     break
         end = 1
     except Exception as error: 
