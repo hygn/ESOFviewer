@@ -90,8 +90,6 @@ try:
     #extract video info    
     video = dat.split('src":"')[1].split('"')[0]
     revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
-    print(revtime)
-    print(video)
     #getjs
     get_data = {
      '_': str(time.time()).split(".")[0]}
@@ -123,9 +121,6 @@ try:
     postfields = urlencode(post_data)
     rep = int(str(int(revtime)/120).split(".")[0])
     rem = int(revtime) % 120
-    print(revtime)
-    print(rep)
-    print(rem)
     if True:
         while True:
             if i == 0:
