@@ -69,6 +69,7 @@ try:
                 cookie = f.read()
                 break
             else:
+                f.truncate(0)
                 f.write(cookie)
                 break
         except:
