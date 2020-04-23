@@ -1,4 +1,5 @@
 # EBS ESOF뷰어
+코드 더럽습니다 보기전에 유의하세요
 ## 사용방법
 $ pip3 install pycurl --user  
 $ pip3 install wget --user  
