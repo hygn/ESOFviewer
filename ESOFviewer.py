@@ -103,8 +103,6 @@ try:
          postfields, cookie, True)
     print("start packet sent")
     # getvideo
-    pynotifier.Notification(
-        title="video download?", description="please open the command prompt", duration=5).send()
     getvid = input("download video? (y/n):")
     if getvid == "y" or getvid == "n":
         pass
@@ -175,8 +173,7 @@ try:
                 print("end packet sent")
                 break
     end = 1
-    pynotifier.Notification(
-        title="complete!", description="BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요", duration=5).send()
+    print("complete! \n BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
 except Exception as error:
     print("ERROR!!")
     print("please report this problem")
