@@ -18,7 +18,7 @@ def curl(url, postfields, cookie, posten):
         pass
     curl.setopt(pycurl.COOKIE, cookie)
     curl.setopt(pycurl.USERAGENT,
-                "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0")
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36")
     curl.setopt(pycurl.WRITEDATA, buffer)
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
@@ -71,6 +71,11 @@ try:
     dat = curl(url, "", cookie, False)
     print("main page loaded")
     cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
+    killsw = dat.split('<!--')[1].split("-->")[0]
+    if killsw == "kill":
+        print("killswitch detected!")
+        input("")
+        exit()
     # next load
     post_data = {
         'stepSn': params[1].split("=")[1],
@@ -85,6 +90,7 @@ try:
     # extract video info
     video = dat.split('src":"')[1].split('"')[0]
     revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
+    name = dat.split('<strong class="content_tit">')[1].split("<")[0]
     # getjs
     get_data = {
         '_': str(time.time()).split(".")[0]}
@@ -108,7 +114,7 @@ try:
     else:
         getvid = input("download video?(y/n): ")
     if getvid == "y":
-        wget.download(video.replace("\\", ""), 'out.mp4')
+        wget.download(video.replace("\\", ""), name+'.mp4')
         print("video downloaded")
     else:
         print("skip video download")
@@ -145,7 +151,7 @@ try:
                 elif safedrive == "off":
                     time.sleep(10)
                 else:
-                    rep = int((rep-rep%1.5)/1.5)
+                    rep = int((rep-rep % 1.5)/1.5)
                     time.sleep(120+random.randrange(0, 4)-2)
             if i == rep:
                 if safedrive == "strict":
