@@ -145,7 +145,7 @@ try:
                 elif safedrive == "off":
                     time.sleep(10)
                 else:
-                    rep = rep / 2
+                    rep = int((rep-rep%1.5)/1.5)
                     time.sleep(120+random.randrange(0, 4)-2)
             if i == rep:
                 if safedrive == "strict":
@@ -153,7 +153,7 @@ try:
                 elif safedrive == "off":
                     time.sleep(10)
                 else:
-                    time.sleep(rem)
+                    time.sleep(rem/1.5)
                 post_data = {
                     'stepSn': params[1].split("=")[1],
                     'lrnAt': '',
