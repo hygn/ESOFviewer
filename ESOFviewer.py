@@ -4,7 +4,7 @@ import wget
 from urllib.parse import urlencode
 from io import BytesIO
 import random
-import subprocess
+import browser_cookie3 as bc 
 buffer = BytesIO()
 def curl(url, postfields, cookie, posten):
     curl = pycurl.Curl()
@@ -13,7 +13,7 @@ def curl(url, postfields, cookie, posten):
         curl.setopt(curl.POSTFIELDS, postfields)
     else:
         pass
-    curl.setopt(curl.COOKIE, cookie)
+    curl.setopt(pycurl.COOKIE, cookie)
     curl.setopt(pycurl.USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Firefox/42.0")
     curl.setopt(pycurl.WRITEDATA, buffer)
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)   
@@ -22,59 +22,41 @@ def curl(url, postfields, cookie, posten):
     curl.close()
     dat = buffer.getvalue().decode('UTF-8')
     return dat
-def sendnoti(msg):
-    subprocess.Popen(['notify-send', msg])
-    return
 end = 0
 while True:
     if end == 0:
         try:
             url = input("url: ")
-            print("input cookies (empty is use saved cookies)")
-            JSEEEIONID = input("JSESSIONID: ")
-            KHANUSER = input("KHANUSER: ")
             hoc = url.split("//")[1].split(".")[0]
-            safedrive = input("safemode(y/n): ")
-            if safedrive == "y" or safedrive == "n":
-                pass
-            else:
-                 safedrive = input("safemode(y/n): ")
+            while True:
+                browser = input("brower(chrome, firefox): ")
+                if browser == "chrome" or browser == "firefox":
+                    break
+                else:
+                    pass
+            while True:
+                safedrive = input("safemode(off,medium,strict): ")
+                if safedrive == "off" or safedrive == "medium" or safedrive =="strict":
+                    break
+                else:
+                     pass
             break
         except IndexError:
             print("please input valid value!")
 #url =  ""
 #JSEEEIONID = ""
 #KHANUSER = ""
-if end == 1:
-    while True:
-        try:
-            url = input("url: ")
-            hoc = url.split("//")[1].split(".")[0]
-            safedrive = input("safemode(y/n): ")
-            if safedrive == "y" or safedrive == "n":
-                pass
-            else:
-                safedrive = input("safemode(y/n): ")
-            break
-        except IndexError: 
-            print("please input valid value!")
 try:
     get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
     params = get.split("&")
-    cookie = "KHANUSER=" + KHANUSER + "; JSESSIONID=" + JSEEEIONID 
-    while True:
-        try:
-            f = open("cookies.cfg", "r+")
-            if JSEEEIONID == "" or KHANUSER =="":
-                cookie = f.read()
-                break
-            else:
-                f.truncate(0)
-                f.write(cookie)
-                break
-        except:
-            f = open("cookies.cfg", "x")
-            f.close()
+    if browser == "firefox":
+        cjr = str(bc.firefox(domain_name="ebssw.kr")).split(">, <")
+    else:
+        cjr = str(bc.chrome(domain_name="ebssw.kr")).split(">, <")
+    res = [i for i in cjr if hoc+".ebssw.kr" in i] 
+    ck1 = res[0].split(" ")[1].split(" ")[0]
+    ck2 = res[1].split(" ")[1].split(" ")[0]
+    cookie = ck1 +"; "+ ck2
     dat = curl(url, "", cookie, False)
     print("main page loaded")
     cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
@@ -143,15 +125,20 @@ try:
             print("check packet sent")
             i = i + 1
             if i != rep:
-                if safedrive == "y":
+                if safedrive == "strict":
                     time.sleep(120+random.randrange(0,4)-2)
-                if safedrive == "n":
+                elif safedrive == "off":
                     time.sleep(10)
-            if i == rep:
-                if safedrive == "y":
-                    time.sleep(rem)
                 else:
+                    rep = rep / 2
+                    time.sleep(120+random.randrange(0,4)-2)
+            if i == rep:
+                if safedrive == "strict":
+                    time.sleep(rem)
+                elif safedrive == "off":
                     time.sleep(10)
+                else:
+                    time.sleep(rem)
                 post_data = {
                 'stepSn': params[1].split("=")[1] ,
                 'lrnAt': '' , 
