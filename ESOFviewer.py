@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 from io import BytesIO
 import random
 import browser_cookie3 as bc 
+import platform
 buffer = BytesIO()
 def curl(url, postfields, cookie, posten):
     curl = pycurl.Curl()
@@ -29,11 +30,15 @@ while True:
             url = input("url: ")
             hoc = url.split("//")[1].split(".")[0]
             while True:
-                browser = input("brower(chrome, firefox): ")
-                if browser == "chrome" or browser == "firefox":
-                    break
+                if platform.system() == 'Linux':
+                    browser = input("brower(chrome, firefox): ")
+                    if browser == "chrome" or browser == "firefox":
+                        break
+                    else:
+                        pass
                 else:
-                    pass
+                    browser = "chrome"
+                    break
             while True:
                 safedrive = input("safemode(off,medium,strict): ")
                 if safedrive == "off" or safedrive == "medium" or safedrive =="strict":
