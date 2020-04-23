@@ -6,7 +6,6 @@ from io import BytesIO
 import random
 import browser_cookie3
 import platform
-import pynotifier
 buffer = BytesIO()
 
 
