@@ -4,7 +4,7 @@ import wget
 from urllib.parse import urlencode
 from io import BytesIO
 import random
-import browser_cookie3 as bc
+import browser_cookie3
 import platform
 buffer = BytesIO()
 
@@ -60,9 +60,9 @@ try:
     get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
     params = get.split("&")
     if browser == "firefox":
-        cjr = str(bc.firefox(domain_name="ebssw.kr")).split(">, <")
+        cjr = str(browser_cookie3.firefox(domain_name="ebssw.kr")).split(">, <")
     else:
-        cjr = str(bc.chrome(domain_name="ebssw.kr")).split(">, <")
+        cjr = str(browser_cookie3.chrome(domain_name="ebssw.kr")).split(">, <")
     res = [i for i in cjr if hoc+".ebssw.kr" in i]
     ck1 = res[0].split(" ")[1].split(" ")[0]
     ck2 = res[1].split(" ")[1].split(" ")[0]
