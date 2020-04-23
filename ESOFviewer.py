@@ -126,7 +126,7 @@ try:
                 lrnmux = 1
             post_data = {
                 'stepSn': params[1].split("=")[1],
-                'lrnAt': '',
+                'lrnAt': '1',
                 'atnlcNo': params[0].split("=")[1],
                 'lctreSn': params[2].split("=")[1],
                 'cntntsTyCode': cnts,
