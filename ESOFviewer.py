@@ -6,6 +6,7 @@ from io import BytesIO
 import random
 import browser_cookie3
 import platform
+import pynotifier
 buffer = BytesIO()
 
 
@@ -26,6 +27,11 @@ def curl(url, postfields, cookie, posten):
     curl.close()
     dat = buffer.getvalue().decode('UTF-8')
     return dat
+
+
+def sendnoti(title, content):
+    pynotifier.Notification(
+        title=title, description=content, duration=5).send()
 
 
 end = 0
@@ -60,7 +66,8 @@ try:
     get = url.strip("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnView.do?")
     params = get.split("&")
     if browser == "firefox":
-        cjr = str(browser_cookie3.firefox(domain_name="ebssw.kr")).split(">, <")
+        cjr = str(browser_cookie3.firefox(
+            domain_name="ebssw.kr")).split(">, <")
     else:
         cjr = str(browser_cookie3.chrome(domain_name="ebssw.kr")).split(">, <")
     res = [i for i in cjr if hoc+".ebssw.kr" in i]
@@ -101,6 +108,7 @@ try:
          postfields, cookie, True)
     print("start packet sent")
     # getvideo
+    sendnoti("video download?", "please open the command prompt")
     getvid = input("download video? (y/n):")
     if getvid == "y" or getvid == "n":
         pass
@@ -171,7 +179,7 @@ try:
                 print("end packet sent")
                 break
     end = 1
-    print("complete! \n BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
+    sendnoti("complete!", "BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
 except Exception as error:
     print("ERROR!!")
     print("please report this problem")
