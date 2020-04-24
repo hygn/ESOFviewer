@@ -71,7 +71,8 @@ try:
     ck2 = res[1].split(" ")[1].split(" ")[0]
     ck3 = res[2].split(" ")[1].split(" ")[0]
     ck4 = res[3].split(" ")[1].split(" ")[0]
-    cookie = ck1 +", " + ck2+", " + ck3+", " + ck4
+    ck5 = res[4].split(" ")[1].split(" ")[0]
+    cookie = ck1 +", " + ck2+", " + ck3+", " + ck4+", " + ck5
     dat = curl(url, "", cookie, False)
     print("main page loaded")
     cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
