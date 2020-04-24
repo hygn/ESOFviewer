@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import pycurl
 import time
 import wget
@@ -6,6 +7,7 @@ from io import BytesIO
 import random
 import browser_cookie3
 import platform
+import youtube_dl
 buffer = BytesIO()
 
 
@@ -94,6 +96,7 @@ try:
         video = dat.split('src":"')[1].split('"')[0]
         vidtype = "ebs"
     except Exception:
+        video = dat.split('<iframe id="iframeYoutube" src="')[1].split('"')[0]
         vidtype = "yt"
         pass
     revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
@@ -115,19 +118,21 @@ try:
          postfields, cookie, True)
     print("start packet sent")
     # getvideo
-    if vidtype == "ebs":
-        getvid = input("download video? (y/n):")
-        if getvid == "y" or getvid == "n":
-            pass
-        else:
-            getvid = input("download video?(y/n): ")
-        if getvid == "y":
+    getvid = input("download video? (y/n):")
+    if getvid == "y" or getvid == "n":
+        pass
+    else:
+        getvid = input("download video?(y/n): ")
+    if getvid == "y":
+        if vidtype == 'ebs':
             wget.download(video.replace("\\", ""), name+'.mp4')
             print("video downloaded")
+        if vidtype == 'yt':
+            ydl_opts = {}
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([video])
         else:
             print("skip video download")
-    else:
-        print("youtube download currently not supported!")
     # studycheck
     i = 0
     postfields = urlencode(post_data)
