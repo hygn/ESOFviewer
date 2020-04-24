@@ -132,8 +132,8 @@ try:
             ydl_opts = {}
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video])
-        else:
-            print("skip video download")
+    else:
+        print("skip video download")
     # studycheck
     i = 0
     postfields = urlencode(post_data)
