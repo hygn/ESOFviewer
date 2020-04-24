@@ -90,7 +90,12 @@ try:
                postfields, cookie, True)
     print("sub page loaded")
     # extract video info
-    video = dat.split('src":"')[1].split('"')[0]
+    try:
+        video = dat.split('src":"')[1].split('"')[0]
+        vidtype = "ebs"
+    except Exception:
+        vidtype = "yt"
+        pass
     revtime = dat.split('var revivTime = Number( "')[1].split('"')[0]
     name = dat.split('<strong class="content_tit">')[1].split("<")[0]
     # getjs
@@ -110,16 +115,19 @@ try:
          postfields, cookie, True)
     print("start packet sent")
     # getvideo
-    getvid = input("download video? (y/n):")
-    if getvid == "y" or getvid == "n":
-        pass
+    if vidtype == "ebs":
+        getvid = input("download video? (y/n):")
+        if getvid == "y" or getvid == "n":
+            pass
+        else:
+            getvid = input("download video?(y/n): ")
+        if getvid == "y":
+            wget.download(video.replace("\\", ""), name+'.mp4')
+            print("video downloaded")
+        else:
+            print("skip video download")
     else:
-        getvid = input("download video?(y/n): ")
-    if getvid == "y":
-        wget.download(video.replace("\\", ""), name+'.mp4')
-        print("video downloaded")
-    else:
-        print("skip video download")
+        print("youtube download currently not supported!")
     # studycheck
     i = 0
     postfields = urlencode(post_data)
@@ -153,7 +161,7 @@ try:
                 elif safedrive == "off":
                     time.sleep(10)
                 else:
-                    rep = int((rep-rep % 1.5)/1.5)
+                    rep = int((rep-rep % 1.4)/1.4)
                     time.sleep(120+random.randrange(0, 4)-2)
             if i == rep:
                 if safedrive == "strict":
@@ -161,7 +169,7 @@ try:
                 elif safedrive == "off":
                     time.sleep(10)
                 else:
-                    time.sleep(rem/1.5)
+                    time.sleep(rem/1.4)
                 post_data = {
                     'stepSn': params[1].split("=")[1],
                     'lrnAt': '0',
