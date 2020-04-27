@@ -203,9 +203,13 @@ try:
                     'revivTime': revtime,
                     'lastRevivLc': str(int(revtime)),
                     'lrnTime': str(rem),
-                    'endButtonYn':  'Y'
                 }
                 postfields = urlencode(post_data)
+                curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
+                     postfields, cookie, True, OS, browser)
+                post_data.update({'endButtonYn':  'Y'})
+                postfields = urlencode(post_data)
+                print(postfields)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                      postfields, cookie, True, OS, browser)
                 print("end packet sent")
