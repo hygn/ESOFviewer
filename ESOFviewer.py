@@ -11,7 +11,7 @@ import youtube_dl
 buffer = BytesIO()
 
 
-def curl(url, postfields, cookie, posten):
+def curl(url, postfields, cookie, posten, os, browser):
     curl = pycurl.Curl()
     curl.setopt(curl.URL, url)
     if posten:
@@ -19,8 +19,20 @@ def curl(url, postfields, cookie, posten):
     else:
         pass
     curl.setopt(pycurl.COOKIE, cookie)
-    curl.setopt(pycurl.USERAGENT,
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36")
+    if os == "windows":
+        if browser == "chrome":
+            curl.setopt(pycurl.USERAGENT,
+                   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36")
+        if browser== "firefox":
+            curl.setopt(pycurl.USERAGENT,
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0")
+    if os == "linux":
+        if browser == "chrome":
+            curl.setopt(pycurl.USERAGENT,
+                   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36")
+        if browser== "firefox":
+            curl.setopt(pycurl.USERAGENT,
+                    "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0")
     curl.setopt(pycurl.WRITEDATA, buffer)
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
@@ -43,7 +55,9 @@ while True:
                         break
                     else:
                         pass
+                    OS = "linux"
                 else:
+                    OS = "windows"
                     browser = "chrome"
                     break
             while True:
@@ -77,7 +91,7 @@ try:
         else: 
             cookie = cookie + ", "
         cki = cki+1
-    dat = curl(url, "", cookie, False)
+    dat = curl(url, "", cookie, False , OS, browser)
     print("main page loaded")
     cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
     killsw = dat.split('<!--')[1].split("-->")[0]
@@ -94,7 +108,7 @@ try:
         'cntntsTyCode': cnts}
     postfields = urlencode(post_data)
     dat = curl("https://"+hoc+".ebssw.kr/mypage/userlrn/userLrnMvpView.do",
-               postfields, cookie, True)
+               postfields, cookie, True, OS, browser)
     print("sub page loaded")
     # extract video info
     try:
@@ -110,9 +124,9 @@ try:
     get_data = {
         '_': str(time.time()).split(".")[0]}
     getfields = urlencode(get_data)
-    curl("https://"+hoc+".ebssw.kr/js/require.js?"+getfields, "", cookie, False)
+    curl("https://"+hoc+".ebssw.kr/js/require.js?"+getfields, "", cookie, False, OS, browser)
     curl("https://"+hoc+".ebssw.kr/js/egovframework/com/ebs/cmmn/common.js?" +
-         getfields, "", cookie, False)
+         getfields, "", cookie, False, OS, browser)
     print("js loaded")
     # startsig
     post_data = {
@@ -120,7 +134,7 @@ try:
         'cntntsUseTyCode': cnts}
     postfields = urlencode(post_data)
     curl("https://"+hoc+".ebssw.kr/esof/cmmn/cntntsUseInsert.do",
-         postfields, cookie, True)
+         postfields, cookie, True, OS, browser)
     print("start packet sent")
     # getvideo
     getvid = input("download video? (y/n):")
@@ -162,7 +176,7 @@ try:
                 'lrnTime': str(120*lrnmux)}
             postfields = urlencode(post_data)
             curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
-                 postfields, cookie, True)
+                 postfields, cookie, True, OS, browser)
             print("check packet sent")
             i = i + 1
             if i != rep:
@@ -194,7 +208,7 @@ try:
                 }
                 postfields = urlencode(post_data)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
-                     postfields, cookie, True)
+                     postfields, cookie, True, OS, browser)
                 print("end packet sent")
                 break
     end = 1
