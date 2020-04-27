@@ -67,9 +67,16 @@ try:
     else:
         cjr = str(browser_cookie3.chrome(domain_name="ebssw.kr")).split(">, <")
     res = [i for i in cjr if hoc+".ebssw.kr" in i]
-    ck1 = res[0].split(" ")[1].split(" ")[0]
-    ck2 = res[1].split(" ")[1].split(" ")[0]
-    cookie = ck1 +", " + ck2
+    cki = 0
+    cookie = ""
+    while cki != len(res):
+        ck = res[cki].split(" ")[1].split(" ")[0]
+        cookie = cookie + ck
+        if cki + 1 == len(res):
+            pass
+        else: 
+            cookie = cookie + ", "
+        cki = cki+1
     dat = curl(url, "", cookie, False)
     print("main page loaded")
     cnts = dat.split('if( headerCntntsTyCode === "')[1].split('"')[0]
