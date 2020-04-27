@@ -209,9 +209,8 @@ try:
                      postfields, cookie, True, OS, browser)
                 post_data.update({'endButtonYn':  'Y'})
                 postfields = urlencode(post_data)
-                print(postfields)
-                curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
-                     postfields, cookie, True, OS, browser)
+                #curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
+                     #postfields, cookie, True, OS, browser)
                 print("end packet sent")
                 break
             i = i + 1
