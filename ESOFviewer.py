@@ -50,12 +50,12 @@ while True:
             hoc = url.split("//")[1].split(".")[0]
             while True:
                 if platform.system() == 'Linux':
+                    OS = "linux"
                     browser = input("brower(chrome, firefox): ")
                     if browser == "chrome" or browser == "firefox":
                         break
                     else:
                         pass
-                    OS = "linux"
                 else:
                     OS = "windows"
                     browser = "chrome"
@@ -178,7 +178,6 @@ try:
             curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                  postfields, cookie, True, OS, browser)
             print("check packet sent")
-            i = i + 1
             if i != rep:
                 if safedrive == "strict":
                     time.sleep(120+random.randrange(0, 4)-2)
@@ -202,7 +201,7 @@ try:
                     'cntntsTyCode': cnts,
                     'lctreSeCode': 'LCTRE',
                     'revivTime': revtime,
-                    'lastRevivLc': str(int(revtime)+random.randrange(0, 1)),
+                    'lastRevivLc': str(int(revtime)),
                     'lrnTime': str(rem),
                     'endButtonYn':  'Y'
                 }
@@ -211,6 +210,7 @@ try:
                      postfields, cookie, True, OS, browser)
                 print("end packet sent")
                 break
+            i = i + 1
     end = 1
     print("complete! \n BanG Dream! 노래 정말 좋습니다. 꼭 들어보세요")
 except Exception as error:
