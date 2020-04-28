@@ -61,8 +61,8 @@ while True:
                     browser = "chrome"
                     break
             while True:
-                safedrive = input("safemode(dangerous,off,medium,strict): ")
-                if safedrive == "off" or safedrive == "medium" or safedrive == "strict" or safedrive == "dangerous":
+                safedrive = input("safemode(medium,strict): ")
+                if safedrive == "no" or safedrive == "medium" or safedrive == "strict" or safedrive == "dangerous":
                     break
                 else:
                     pass
@@ -178,11 +178,11 @@ try:
             if safedrive != "dangerous":
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                      postfields, cookie, True, OS, browser)
-            print("check packet sent")
+                print("check packet sent")
             if i != rep:
                 if safedrive == "strict":
                     time.sleep(120+random.randrange(0, 4)-2)
-                elif safedrive == "off":
+                elif safedrive == "no":
                     time.sleep(10)
                 elif safedrive == "dangerous":
                     pass
@@ -192,30 +192,18 @@ try:
             if i == rep:
                 if safedrive == "strict":
                     time.sleep(rem)
-                elif safedrive == "off":
+                elif safedrive == "no":
                     time.sleep(10)
                 elif safedrive == "dangerous":
                     pass
                 else:
                     time.sleep(rem/1.4)
-                post_data = {
-                    'stepSn': params[1].split("=")[1],
-                    'lrnAt': '0',
-                    'atnlcNo': params[0].split("=")[1],
-                    'lctreSn': params[2].split("=")[1],
-                    'cntntsTyCode': cnts,
-                    'lctreSeCode': 'LCTRE',
-                    'revivTime': revtime,
-                    'lastRevivLc': str(int(revtime)),
-                    'lrnTime': str(rem),
-                }
                 postfields = urlencode(post_data)
+                post_data.update({'endButtonYn':  'Y', 'lastRevivLc': str(int(revtime)), 'lrnTime': str(rem)})
+                postfields = urlencode(post_data)
+                print(postfields)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                      postfields, cookie, True, OS, browser)
-                post_data.update({'endButtonYn':  'Y'})
-                postfields = urlencode(post_data)
-                #curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
-                     #postfields, cookie, True, OS, browser)
                 print("end packet sent")
                 break
             i = i + 1
