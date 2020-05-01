@@ -174,6 +174,8 @@ try:
                 'revivTime': revtime,
                 'lastRevivLc': str(120 * i),
                 'lrnTime': str(120*lrnmux)}
+            if safedrive == "medium":
+                post_data.update({'lastRevivLc': str(120 * i * 1.5)})
             postfields = urlencode(post_data)
             if safedrive != "dangerous":
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
@@ -187,7 +189,7 @@ try:
                 elif safedrive == "dangerous":
                     pass
                 else:
-                    rep = int((rep-rep % 1.4)/1.4)
+                    rep = int((rep-rep % 1.5)/1.5)
                     time.sleep(120+random.randrange(0, 4)-2)
             if i == rep:
                 if safedrive == "strict":
@@ -197,7 +199,7 @@ try:
                 elif safedrive == "dangerous":
                     pass
                 else:
-                    time.sleep(rem/1.4)
+                    time.sleep(rem)
                 postfields = urlencode(post_data)
                 post_data.update({'endButtonYn':  'Y', 'lastRevivLc': str(int(revtime)), 'lrnTime': str(rem)})
                 postfields = urlencode(post_data)
