@@ -155,13 +155,13 @@ try:
     # studycheck
     i = 0
     postfields = urlencode(post_data)
-    rep = int(str(int(revtime)/120).split(".")[0])
+    rep = int((int(revtime) - int(revtime)%120)/120)
     rem = int(revtime) % 120
     time_min = str(int((int(revtime) - int(revtime) % 60)/60)) 
     time_sec = str(int(revtime) % 60)
     encheck = True
     if safedrive == "medium":
-        rep = int((rep - rep % 1.5)/1.5)
+        rep = int((int(revtime)/1.5 - (int(revtime)/1.5)%120)/120)
     if encheck == True:
         while True:
             if i == 0:
@@ -177,20 +177,21 @@ try:
                 'lctreSeCode': 'LCTRE',
                 'revivTime': revtime,
                 'lrnTime': str(120*lrnmux)}
-            if lrnmux == 1:
+            if True:
                 post_data.update({'lastRevivLc': str(120 * i)})
                 if safedrive == "medium":
-                    post_data.update({'lastRevivLc': str(120 * i * 1.5)})
+                    post_data.update({'lastRevivLc': str(180 * i)})
             postfields = urlencode(post_data)
             if safedrive != "dangerous":
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                      postfields, cookie, True, OS, browser)
                 print("check packet sent")
-                print("total time: " + time_min + ":" + time_sec)
+                print("total time: " + time_min + " min " + time_sec) + " sec"
                 if safedrive == 'medium':
-                    print("time elapsed: " + str(i * 3))
+                    print("time elapsed: " + str(i * 3) + " min")
                 else:
-                    print("time elapsed: " + str(i * 2))
+                    print("time elapsed: " + str(i * 2) + " min")
+                print('-----')
             if i != rep:
                 if safedrive == "strict":
                     time.sleep(120+random.randrange(0, 4)-2)
@@ -199,7 +200,6 @@ try:
                 elif safedrive == "dangerous":
                     pass
                 else:
-                    print(rep)
                     time.sleep(120+random.randrange(0, 4)-2)
             if i == rep:
                 if safedrive == "strict":
@@ -213,7 +213,6 @@ try:
                 postfields = urlencode(post_data)
                 post_data.update({'endButtonYn':  'Y', 'lastRevivLc': str(int(revtime)), 'lrnTime': str(rem)})
                 postfields = urlencode(post_data)
-                print(postfields)
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                      postfields, cookie, True, OS, browser)
                 print("end packet sent")
