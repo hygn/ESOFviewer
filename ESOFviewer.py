@@ -186,7 +186,7 @@ try:
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
                      postfields, cookie, True, OS, browser)
                 print("check packet sent")
-                print("total time: " + time_min + " min " + time_sec) + " sec"
+                print("total time: " + time_min + " min " + time_sec + " sec")
                 if safedrive == 'medium':
                     print("time elapsed: " + str(i * 3) + " min")
                 else:
