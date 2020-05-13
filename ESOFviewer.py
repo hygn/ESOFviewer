@@ -155,13 +155,17 @@ try:
     # studycheck
     i = 0
     postfields = urlencode(post_data)
-    rep = int((int(revtime) - int(revtime)%120)/120)
-    rem = int(revtime) % 120
+    if int(revtime) < 120:
+        lrntime = int(int(revtime)/2)
+    else: 
+        lrntime = 120
+    rep = int((int(revtime) - int(revtime)%lrntime)/lrntime)
+    rem = int(revtime) % lrntime
     time_min = str(int((int(revtime) - int(revtime) % 60)/60)) 
     time_sec = str(int(revtime) % 60)
     encheck = True
     if safedrive == "medium":
-        rep = int((int(revtime)/1.5 - (int(revtime)/1.5)%120)/120)
+        rep = int((int(revtime)/1.5 - (int(revtime)/1.5)%lrntime)/lrntime)
     if encheck == True:
         while True:
             if i == 0:
@@ -176,11 +180,11 @@ try:
                 'cntntsTyCode': cnts,
                 'lctreSeCode': 'LCTRE',
                 'revivTime': revtime,
-                'lrnTime': str(120*lrnmux)}
+                'lrnTime': str(lrntime*lrnmux)}
             if True:
-                post_data.update({'lastRevivLc': str(120 * i)})
+                post_data.update({'lastRevivLc': str(lrntime * i)})
                 if safedrive == "medium":
-                    post_data.update({'lastRevivLc': str(180 * i)})
+                    post_data.update({'lastRevivLc': str(int(lrntime*1.5) * i)})
             postfields = urlencode(post_data)
             if safedrive != "dangerous":
                 curl("https://"+hoc+".ebssw.kr/mypage/userlrn/lctreLrnSave.do",
@@ -188,19 +192,19 @@ try:
                 print("check packet sent")
                 print("total time: " + time_min + " min " + time_sec + " sec")
                 if safedrive == 'medium':
-                    print("time elapsed: " + str(i * 3) + " min")
+                    print("time elapsed: " + str(i * int(lrntime*1.5/60)) + " min")
                 else:
-                    print("time elapsed: " + str(i * 2) + " min")
+                    print("time elapsed: " + str(i * lrntime/60) + " min")
                 print('-----')
             if i != rep:
                 if safedrive == "strict":
-                    time.sleep(120+random.randrange(0, 4)-2)
+                    time.sleep(lrntime+random.randrange(0, 4)-2)
                 elif safedrive == "no":
                     time.sleep(10)
                 elif safedrive == "dangerous":
                     pass
                 else:
-                    time.sleep(120+random.randrange(0, 4)-2)
+                    time.sleep(lrntime+random.randrange(0, 4)-2)
             if i == rep:
                 if safedrive == "strict":
                     time.sleep(rem)
