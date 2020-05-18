@@ -182,7 +182,7 @@ try:
                 'revivTime': revtime,
                 'lrnTime': str(lrntime*lrnmux)}
             if True:
-                post_data.update({'lastRevivLc': str(lrntime * i)})
+                post_data.update({'lastRevivLc': str(int(lrntime * i))})
                 if safedrive == "medium":
                     post_data.update({'lastRevivLc': str(int(lrntime*1.5) * i)})
             postfields = urlencode(post_data)
@@ -194,7 +194,7 @@ try:
                 if safedrive == 'medium':
                     print("time elapsed: " + str(i * int(lrntime*1.5/60)) + " min")
                 else:
-                    print("time elapsed: " + str(i * lrntime/60) + " min")
+                    print("time elapsed: " + str(i * int(lrntime/60)) + " min")
                 print('-----')
             if i != rep:
                 if safedrive == "strict":
