@@ -1,6 +1,5 @@
 # 왜 이런 문서를 만들었나요
-* 억울하게 부적정수강 당해서
-* 씨1발 듣지도 않았는데 왜 부적정수강인데
+* {검열됨}
 # 어케 알아냄?
 * 개발자모드의 network탭
 * mitmproxy를 사용한 패킷 분석
@@ -42,6 +41,7 @@
 * 쿠키 (JSESSIONID, khanuser)
 ### 강의 진도율 보고
 * 강의 진도율 보고는 2분(120초)마다 이루어짐
+  * 만약 영상 길이가 120초보다 짧을 경우 (영상길이)/2 초마다 강의 진요율 보고 요청을 보낸다. 
 * 요청 반복 횟수 = {(동영상 재생시간)-(동영상 재생시간)%120}/120 
   * %는 나머지를 뜻함
 * POST요청 (stepSn, lrnAt, atnlcNo, lctreSn, cntntsTyCode, lctreSeCode, revivTime, lastRevivLc, lrnTime)
