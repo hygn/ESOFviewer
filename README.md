@@ -5,6 +5,8 @@
 ## Prerequirements
 [Python, pip](https://www.python.org/downloads/)
 ## 사용방법
+$ git clone https://gitlab.com/Hygn/esofviewer.git
+(and cd into it)
 $ pip3 install pycurl --user  
 $ pip3 install wget --user  
 $ pip3 install browser-cookie3 --user
