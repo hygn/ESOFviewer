@@ -5,12 +5,11 @@
 ## Prerequirements
 [Python, pip](https://www.python.org/downloads/)
 ## 사용방법
-$ git clone https://gitlab.com/Hygn/esofviewer.git
-(and cd into it)
-
+$ git clone https://gitlab.com/Hygn/esofviewer.git   
+(and cd into it)   
 $ pip3 install pycurl --user  
 $ pip3 install wget --user  
-$ pip3 install browser-cookie3 --user
+$ pip3 install browser-cookie3 --user   
 $ python3 ESOFviewer.py   
 강의 URL과 JSESSIONID,KHANUSER 쿠키를 입력하면 자동으로 시작합니다.  
 
