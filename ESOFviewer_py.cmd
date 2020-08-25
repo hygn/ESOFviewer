@@ -1,3 +1,5 @@
+git clone https://gitlab.com/Hygn/esofviewer.git
+cd esofviewer
 pip install pycurl
 pip install wget
 pip install browser_cookie3
