@@ -2,12 +2,16 @@
 ## USE AT YOUR OWN RISK
 # EBS ESOF뷰어
 코드 더럽습니다 보기전에 유의하세요
+## Prerequirements
+[Python, pip](https://www.python.org/downloads/)
 ## 사용방법
 $ pip3 install pycurl --user  
 $ pip3 install wget --user  
-$ pip install browser-cookie3 --user  
+$ pip3 install browser-cookie3 --user
 $ python3 ESOFviewer.py   
 강의 URL과 JSESSIONID,KHANUSER 쿠키를 입력하면 자동으로 시작합니다.  
+
+Or if Windows Users, you can just run ESOFviewer_py.cmd
 ## 결과
 강의 파일이 (강의 이름).mp4로 다운로드됩니다   
 강의 시청 완료로 업데이트 됩니다   
